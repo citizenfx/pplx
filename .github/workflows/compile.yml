@@ -1,0 +1,48 @@
+on: push
+jobs:
+  build:
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      matrix:
+        config:
+          - {
+              name: linux,
+              os: ubuntu-20.04,
+              cc: gcc-9,
+              cxx: g++-9,
+              args: -DCMAKE_BUILD_TYPE=RelWithDebInfo,
+              nethost: nethost-linux,
+            }
+          - {
+              name: windows,
+              os: windows-latest,
+              cc: cl,
+              cxx: cl,
+              args: -DCMAKE_BUILD_TYPE=RelWithDebInfo -A x64 -T host=x64,
+              nethost: nethost-windows,
+            }
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: actions/download-artifact@v3
+        with:
+          name: ${{ matrix.config.nethost }}
+          path: ./
+      - working-directory: ./
+        shell: cmake -P {0}
+        run: |
+          set(ENV{CC} ${{ matrix.config.cc }})
+          set(ENV{CXX} ${{ matrix.config.cxx }})
+          file(MAKE_DIRECTORY build)
+          execute_process(
+            COMMAND cmake .. ${{ matrix.config.args }}
+            RESULT_VARIABLE result
+            WORKING_DIRECTORY build
+          )
+          if (NOT result EQUAL 0)
+            message(FATAL_ERROR "Bad exit status")
+          endif()
+      - working-directory: ./
+        shell: bash
+        run: cmake --build build --config RelWithDebInfo
