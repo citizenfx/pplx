@@ -4,7 +4,7 @@
 *
 * =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+
 **/
-#include "pplx/stdafx.h"
+#include "stdafx.h"
 
 #if !defined(CPPREST_EXCLUDE_WEBSOCKETS) || !defined(_WIN32)
 #include "pplx/threadpool.h"

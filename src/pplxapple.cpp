@@ -14,7 +14,7 @@
 #include <pthread.h>
 #include <dispatch/dispatch.h>
 #include <libkern/OSAtomic.h>
-#include "pplx/stdafx.h"
+#include "stdafx.h"
 #include "pplx/pplx.h"
 
 // DEVNOTE:
