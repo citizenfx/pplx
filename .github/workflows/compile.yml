@@ -23,12 +23,6 @@ jobs:
             }
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: recursive
-      - uses: actions/download-artifact@v3
-        with:
-          name: ${{ matrix.config.nethost }}
-          path: ./
       - working-directory: ./
         shell: cmake -P {0}
         run: |
