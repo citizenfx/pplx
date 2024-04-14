@@ -4,7 +4,17 @@ include(GNUInstallDirs)
 project(pplx VERSION 1.0.0 DESCRIPTION "pplx")
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    find_package(Boost COMPONENTS thread date_time)
+
+    set(BOOST_INCLUDE_LIBRARIES thread date_time)
+    set(BOOST_ENABLE_CMAKE ON)
+
+    include(FetchContent)
+    FetchContent_Declare(
+        Boost
+        GIT_REPOSITORY https://github.com/boostorg/boost.git
+        GIT_TAG boost-1.73.0
+    )
+    FetchContent_MakeAvailable(Boost)
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 option(${PROJECT_NAME}_as_shared "build as a shared library" ON)
@@ -13,7 +23,11 @@ set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} -std=c++11)
 
 add_library(${PROJECT_NAME} "")
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} POSITION_INDEPENDENT_CODE ON)
-target_include_directories(${PROJECT_NAME} PRIVATE ${Boost_INCLUDE_DIRS})
+
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+	target_link_libraries(${PROJECT_NAME} PRIVATE Boost::thread Boost::date_time)
+endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+
 target_include_directories(${PROJECT_NAME} PRIVATE include)
 target_sources(${PROJECT_NAME}
     PUBLIC
