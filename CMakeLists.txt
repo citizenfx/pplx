@@ -5,7 +5,7 @@ project(pplx VERSION 1.0.0 DESCRIPTION "pplx")
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
-    set(BOOST_INCLUDE_LIBRARIES thread date_time)
+    set(BOOST_INCLUDE_LIBRARIES system thread date_time)
     set(BOOST_ENABLE_CMAKE ON)
 
     include(FetchContent)
@@ -25,10 +25,12 @@ add_library(${PROJECT_NAME} "")
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} POSITION_INDEPENDENT_CODE ON)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-    #set(BOOST_SOURCE_DIR "${boost_SOURCE_DIR}")
     FetchContent_MakeAvailable(Boost)
-    include_directories(${boost_SOURCE_DIR})
-    #target_link_libraries(${PROJECT_NAME} PRIVATE Boost::thread Boost::date_time)
+    file(GLOB Boost_INCLUDE_DIRS LIST_DIRECTORIES true ${Boost_SOURCE_DIR}/libs/*/include)
+    target_link_libraries(${PROJECT_NAME} PRIVATE Boost::thread Boost::date_time)
+    target_include_directories(${PROJECT_NAME}
+        PUBLIC ${Boost_INCLUDE_DIRS}
+    )
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 target_include_directories(${PROJECT_NAME} PRIVATE include)
