@@ -3,7 +3,9 @@ include(GNUInstallDirs)
 
 project(pplx VERSION 1.0.0 DESCRIPTION "pplx")
 
-find_package(Boost COMPONENTS thread date_time)
+if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+    find_package(Boost COMPONENTS thread date_time)
+endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 option(${PROJECT_NAME}_as_shared "build as a shared library" ON)
 set(BUILD_SHARED_LIBS ${${PROJECT_NAME}_as_shared})
