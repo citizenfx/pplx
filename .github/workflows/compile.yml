@@ -21,6 +21,7 @@ jobs:
               args: -DCMAKE_BUILD_TYPE=RelWithDebInfo -A x64 -T host=x64,
               nethost: nethost-windows,
             }
+      fail-fast: false
     steps:
       - uses: actions/checkout@v4
       - working-directory: ./
