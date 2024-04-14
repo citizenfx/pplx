@@ -7,7 +7,7 @@
 #include "stdafx.h"
 
 #if !defined(CPPREST_EXCLUDE_WEBSOCKETS) || !defined(_WIN32)
-#include "pplx/threadpool.h"
+#include "threadpool.h"
 
 #if !defined(_WIN32)
 #define CPPREST_PTHREADS

@@ -10,11 +10,11 @@ if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
     include(FetchContent)
     FetchContent_Declare(
-        Boost
-        GIT_REPOSITORY https://github.com/boostorg/boost.git
-        GIT_TAG boost-1.73.0
+      Boost
+      URL https://github.com/boostorg/boost/releases/download/boost-1.81.0/boost-1.81.0.7z
+      USES_TERMINAL_DOWNLOAD TRUE
+      DOWNLOAD_NO_EXTRACT FALSE
     )
-    FetchContent_MakeAvailable(Boost)
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 option(${PROJECT_NAME}_as_shared "build as a shared library" ON)
@@ -25,7 +25,10 @@ add_library(${PROJECT_NAME} "")
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION} POSITION_INDEPENDENT_CODE ON)
 
 if(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-	target_link_libraries(${PROJECT_NAME} PRIVATE Boost::thread Boost::date_time)
+    #set(BOOST_SOURCE_DIR "${boost_SOURCE_DIR}")
+    FetchContent_MakeAvailable(Boost)
+    include_directories(${boost_SOURCE_DIR})
+    #target_link_libraries(${PROJECT_NAME} PRIVATE Boost::thread Boost::date_time)
 endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 target_include_directories(${PROJECT_NAME} PRIVATE include)

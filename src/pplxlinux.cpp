@@ -13,7 +13,7 @@
 
 #include "stdafx.h"
 #include "pplx/pplx.h"
-#include "pplx/threadpool.h"
+#include "threadpool.h"
 #include "sys/syscall.h"
 
 #ifdef _WIN32
